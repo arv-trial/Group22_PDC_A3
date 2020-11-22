@@ -18,6 +18,7 @@ In `configs/db.config.json`, do modify 2 fields:
 }
 ```
 
+
 ## Run code
 ```bash
 # Install needed dependencies
@@ -26,4 +27,4 @@ $ npm i
 # Run in you localhost
 $ npm start
 ```
-To test server, in browser's URL bar, enter: `http://localhost:8080/drug`, you should see a list of drug
+To test server, in browser's URL bar, enter: `http://localhost:8080/drug`, you should see a list of drugs
