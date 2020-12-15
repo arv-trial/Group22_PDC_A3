@@ -4,7 +4,15 @@
     "host": "localhost",
     "port": 3306,
     "user": "root",
-    "password": "root",
+    "password": "Overlord_Toc6",
     "database": "arvtrials"
+  },
+  "remoteDbConfig": {
+    "connectionLimit": 100,
+    "host": "db4free.net",
+    "port": 3306,
+    "user": "mooncactus",
+    "password": "555555555",
+    "database": "art_trial"
   }
 }

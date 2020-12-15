@@ -5,7 +5,8 @@ const route = express.Router()
 
 
 route.get('/', async (req, res) => {
-    const ret = await drugModel.getAll()
+    console.log('req :>> ', req);
+    // const ret = await drugModel.getAll()
     res.status(200).json(ret)
 })
 

@@ -1,6 +1,8 @@
+
 const mysql = require('mysql');
-const { dbConfig } = require('../configs/db.config.json');
-const createConnection = () => mysql.createConnection(dbConfig);
+const { dbConfig, remoteDbConfig } = require('../configs/db.config.json');
+// const createConnection = () => mysql.createConnection(dbConfig);
+const createConnection = () => mysql.createConnection(remoteDbConfig);
 
 module.exports = {
     load: (sql) => {
@@ -14,6 +16,7 @@ module.exports = {
             connection.end();
         });
     },
+
     add: (entity, table) => {
         const sql = `insert into ${table} set ?`
         return new Promise((resolve, reject) => {
@@ -26,8 +29,8 @@ module.exports = {
             connection.end();
         });
     },
-    del: (condition, table) => {
 
+    del: (condition, table) => {
         const sql = `delete from ${table} where ?`
         return new Promise((resolve, reject) => {
             const connection = createConnection();
@@ -39,6 +42,7 @@ module.exports = {
             connection.end();
         });
     },
+
     update: async (entity, condition, table) => {
         const sql = `update ${table} set ? where ?`
         return new Promise((resolve, reject) => {
@@ -52,3 +56,4 @@ module.exports = {
         });
     }
 };
+
