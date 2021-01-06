@@ -25,8 +25,6 @@ app.use(cors({
 const connection = getConnection()
 
 
-// app.use('/drug', drugRoute)
-
 app.use(logger('combined'))
 
 app.post('/patient', (req, res) => {
@@ -35,6 +33,7 @@ app.post('/patient', (req, res) => {
 
     const patientName = req.body.patient_name
     const insurance_id = req.body.insurance_id
+
 
     console.log('req.body', req.body)
 
@@ -60,18 +59,20 @@ app.get("/", (req, res) => {
     res.send("Hello from Rooot")
 })
 
-// app.get('/patient', (req, res) => {
-//     var patients = [] // db ()
+app.get('/patient', (req, res) => {
+    connection.query('SELECT * FROM patient', (err, rows, fields) => {
+        console.log('Thanh cong')
+        res.json(rows)
+    })
+})
 
-//     res.status(200).json(patients)
-// })
 
 function getConnection() {
     return mysql.createConnection({
         host: 'db4free.net',
         user: 'mooncactus',
         database: 'art_trial',
-        password: '555555555'
+        password: '555555555',
     })
 }
 
@@ -84,7 +85,7 @@ app.get('/patient/:id', (req, res) => {
     })
 })
 
-app.delete('/patient/:id', (req, res)=>{
+app.delete('/patient/:id', (req, res) => {
     const insurance_id = req.params['id']
 
     connection.query('DELETE FROM patient WHERE insurance_id = ?', [insurance_id], (err, rows, fields) => {
