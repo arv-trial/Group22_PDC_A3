@@ -13,14 +13,14 @@ app.get('/:id', (req, res) => {
     })
 })
 
-app.delete('/:id', (req, res) => {
-    const insurance_id = req.params['id']
+// app.delete('/:id', (req, res) => {
+//     const insurance_id = req.params['id']
 
-    connection.query('DELETE FROM patient WHERE insurance_id = ?', [insurance_id], (err, rows, fields) => {
-        console.log('Success')
-        res.json(rows)
-    })
-})
+//     connection.query('DELETE FROM patient WHERE insurance_id = ?', [insurance_id], (err, rows, fields) => {
+//         console.log('Success')
+//         res.json(rows)
+//     })
+// })
 
 
 app.post('/', (req, res) => {
@@ -49,13 +49,30 @@ app.post('/', (req, res) => {
 })
 
 
-
-
 app.get('/', (req, res) => {
     connection.query('SELECT * FROM patient', (err, rows, fields) => {
         console.log('Thanh cong')
         res.json(rows)
     })
 })
+
+app.delete('/:delete_id', (req, res) => {
+    const id = req.params['delete_id']
+    console.log('id', id)
+    // const query = `DELETE FROM patient WHERE insurance_id =  ${id} `
+    connection.query('DELETE FROM clinical_trial WHERE insurance_id =  ?', [id], (err, rows, fields) => {
+        console.log('rows', rows)
+        if (!err) {
+            connection.query('DELETE FROM patient WHERE insurance_id =  ?', [id], (err, rows, fields) => {
+                console.log('Success')
+                res.json(rows)
+            })
+        }
+
+    })
+})
+
+
+
 
 module.exports = app
