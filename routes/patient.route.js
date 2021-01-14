@@ -9,19 +9,13 @@ app.get('/:id', (req, res) => {
     var id = req.params.id
     connection.query('SELECT * FROM patient WHERE insurance_id = ? ', [id], (err, rows, fields) => {
         console.log('Sucess')
-        res.json(rows)
+
+        const result = { ...rows[0], id: rows[0].insurance_id }
+        res.json(result)
     })
 })
 
-// app.delete('/:id', (req, res) => {
-//     const insurance_id = req.params['id']
-
-//     connection.query('DELETE FROM patient WHERE insurance_id = ?', [insurance_id], (err, rows, fields) => {
-//         console.log('Success')
-//         res.json(rows)
-//     })
-// })
-
+// TODO: PUT - /:patient_id
 
 app.post('/', (req, res) => {
     console.log("Trying to create a new user...")
@@ -52,7 +46,14 @@ app.post('/', (req, res) => {
 app.get('/', (req, res) => {
     connection.query('SELECT * FROM patient', (err, rows, fields) => {
         console.log('Thanh cong')
-        res.json(rows)
+        console.log('rows', rows)
+        const result = rows.map(row => ({ ...row, id: row.insurance_id }))
+        console.log('result', result)
+
+        res.header('Access-Control-Expose-Headers', 'Content-Range')
+        res.header('Content-Range', 'bytes : 0-9/*')
+
+        res.json(result)
     })
 })
 
