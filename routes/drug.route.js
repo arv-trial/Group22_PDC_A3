@@ -7,6 +7,7 @@ const connection = getConnection()
 app.get('/', (req, res) => {
     connection.query('SELECT * FROM drug', (err, rows, fields) => {
         console.log('Thanh cong')
+        console.log(res)
         res.json(rows)
     })
 })
