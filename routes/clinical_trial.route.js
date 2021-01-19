@@ -36,7 +36,6 @@ app.delete('/:id/clinical_trial', (req, res) => {
     })
 })
 
-// Update
 app.put('/:id', (req, res) => {
     const id = req.params['id']
     console.log('id', id)
