@@ -41,7 +41,7 @@ app.put("/:edit_id", function (req, res) {
   let birthday = req.params.dateofbirth;
   let gender = req.params.gender;
   connection.query(
-    "UPDATE `patient` SET `patient_name`=?,`dateofbirth`=?,`gender`=? WHERE `insurance_id` = ?",
+    "UPDATE `patient` SET `patient_name`=?,`dateofbirth`=?,`gender`=? WHERE `insurance_id` =?",
     [name, birthday, gender, [id]],
     function (error, results, fields) {
       if (error) throw error;

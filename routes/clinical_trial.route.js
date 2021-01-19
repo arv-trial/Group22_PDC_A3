@@ -5,11 +5,12 @@ const connection = getConnection()
 
 
 app.get('/', (req, res) => {
-    connection.query('SELECT * FROM clinical_trial', (err, rows, fields) => {
+    connection.query('SELECT *, clinical_trial.id_clinical_trial as id FROM clinical_trial', (err, rows, fields) => {
         console.log('Thanh cong')
 
         res.header("Access-Control-Expose-Headers", "Content-Range");
         res.header("Content-Range", "bytes : 0-9/*");
+
 
         res.json(rows)
     })
@@ -18,12 +19,13 @@ app.get('/', (req, res) => {
 
 app.get('/:id/clinical-trial', (req, res) => {
     const id = req.params['id']
-    connection.query('SELECT * FROM patient, clinical_trial WHERE patient.insurance_id =  AND patient.insurance_id = clinical_trial.insurance_id', [id], (err, rows, fields) => {
+    connection.query('SELECT * patient.insurance_id as id FROM patient, clinical_trial WHERE patient.insurance_id =  AND patient.insurance_id = clinical_trial.insurance_id', [id], (err, rows, fields) => {
         console.log('Thanh cong')
 
         res.header("Access-Control-Expose-Headers", "Content-Range");
         res.header("Content-Range", "bytes : 0-9/*");
-        
+
+
         res.json(rows)
     })
 })
