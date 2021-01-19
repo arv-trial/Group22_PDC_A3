@@ -7,6 +7,8 @@ const connection = getConnection()
 app.get('/', (req, res) => {
     connection.query('SELECT *, company.company_name as id FROM company', (err, rows, fields) => {
         console.log('Thanh cong')
+        res.header("Access-Control-Expose-Headers", "Content-Range");
+        res.header("Content-Range", "bytes : 0-9/*");
         res.json(rows)
     })
 })
