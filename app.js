@@ -36,6 +36,10 @@ app.use('/side_effect', require('./routes/side_effect.route'))
 app.use('/clinical_trial', require('./routes/clinical_trial.route'))
 app.use('/result', require('./routes/result.route'))
 
+app.get('/nonsense', (req, res) => res.status(200).json({
+    data: [1, 2, 3, 4, 5]
+}))
+
 app.use(logger('combined'))
 
 module.exports = app;
