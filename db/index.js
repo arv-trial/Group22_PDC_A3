@@ -2,10 +2,14 @@ const mysql = require('mysql');
 
 function getConnection() {
     return mysql.createConnection({
-        host: 'db4free.net',
-        user: 'mooncactus',
-        database: 'art_trial',
-        password: '555555555',
+        // host: 'db4free.net',
+        // user: 'mooncactus',
+        // database: 'art_trial',
+        // password: '555555555',
+        host: 'art-trial.c9sjlj4o6qg9.us-east-2.rds.amazonaws.com',
+        user: 'admin',
+        database: 'art-trial',
+        password: '11111111'
     })
 }
 

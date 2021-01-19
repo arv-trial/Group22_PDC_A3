@@ -31,9 +31,28 @@ app.delete('/:id/clinical_trial', (req, res) => {
                 res.json(rows)
             })
         }
+        res.status(400).jsend(err)
 
     })
 })
 
+// Update
+app.put('/:id', (req, res) => {
+    const id = req.params['id']
+    console.log('id', id)
+    const body = req.body;
+    console.log('body', body)
+
+    connection.query('UPDATE clinical_trial SET ? WHERE id_clinical_trial = ?', [body, id], (err, rows, fields) => {
+        if (!err)
+            return res.status(200).json(rows)
+
+        return res.status(400).send(err)
+
+    })
+    // console.log("Trying to create a new user...")
+    // console.log("How do u get the data?")
+    // res.end()
+})
 
 module.exports = app

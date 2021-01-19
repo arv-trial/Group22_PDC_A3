@@ -20,20 +20,20 @@ app.get("/:id", (req, res) => {
 
 // TODO: PUT - /:patient_id
 
-app.put("/:id", (req, res) => {
-  console.log("Editing patient info with id: " + req.params.id);
-  var id = req.params.id;
-  connection.query(
-    "SELECT * FROM patient WHERE insurance_id = ? ",
-    [id],
-    (err, rows, fields) => {
-      console.log("Sucess");
+// app.put("/:id", (req, res) => {
+//   console.log("Editing patient info with id: " + req.params.id);
+//   var id = req.params.id;
+//   connection.query(
+//     "SELECT * FROM patient WHERE insurance_id = ? ",
+//     [id],
+//     (err, rows, fields) => {
+//       console.log("Sucess");
 
-      const result = { ...rows[0], id: rows[0].insurance_id };
-      res.json(result);
-    }
-  );
-});
+//       const result = { ...rows[0], id: rows[0].insurance_id };
+//       res.json(result);
+//     }
+//   );
+// });
 
 app.put("/:edit_id", function (req, res) {
   let id = req.params["edit_id"];
@@ -41,8 +41,8 @@ app.put("/:edit_id", function (req, res) {
   let birthday = req.params.dateofbirth;
   let gender = req.params.gender;
   connection.query(
-    "UPDATE `patient` SET `patient_name`=?,`dateofbirth`=?,`gender`=? where `insurance_id`=?",
-    [name, birthday, gender, [edit_id]],
+    "UPDATE `patient` SET `patient_name`=?,`dateofbirth`=?,`gender`=? WHERE `insurance_id` = ?",
+    [name, birthday, gender, [id]],
     function (error, results, fields) {
       if (error) throw error;
       console.log(results);
