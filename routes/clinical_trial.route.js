@@ -50,9 +50,6 @@ app.put('/:id', (req, res) => {
         return res.status(400).send(err)
 
     })
-    // console.log("Trying to create a new user...")
-    // console.log("How do u get the data?")
-    // res.end()
 })
 
 module.exports = app
