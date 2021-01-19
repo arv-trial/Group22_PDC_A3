@@ -13,6 +13,8 @@ app.get("/:id", (req, res) => {
       console.log("Sucess");
 
       const result = { ...rows[0], id: rows[0].insurance_id };
+      res.header("Access-Control-Expose-Headers", "Content-Range");
+      res.header("Content-Range", "bytes : 0-9/*");
       res.json(result);
     }
   );

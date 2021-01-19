@@ -23,6 +23,9 @@ app.use(cors({
 
 app.get("/", (req, res) => {
     res.send("Hello from Rooot")
+
+    res.header("Access-Control-Expose-Headers", "Content-Range");
+    res.header("Content-Range", "bytes : 0-9/*");
 })
 
 
