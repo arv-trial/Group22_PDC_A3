@@ -52,8 +52,8 @@ app.get('/resistant', (req, res) => {
         if (!err) {
             console.log('rows', rows)
             let result = rows.reduce((accumulator, currentValue) => {
-                if (currentValue.subtract < 50)
-                    accumulator['resistantPatient'] += 1
+                currentValue.subtract < 50 ?
+                    accumulator['resistantPatient'] += 1 :
                 accumulator['nonResistantPatient'] += 1
                 return accumulator
             }, {
@@ -68,5 +68,28 @@ app.get('/resistant', (req, res) => {
 
     })
 })
+
+app.get('/viral_load', (req, res) => {
+    connection.query(`SELECT undetectable as status FROM clinical_trial `, (err, rows, fields) => {
+        if (!err) {
+            console.log('rows', rows)
+            let result = rows.reduce((accumulator, currentValue) => {
+                currentValue.status == "true" ?
+                    accumulator['undetectable'] += 1 :
+                    accumulator['detectable'] += 1
+                return accumulator
+            }, {
+                detectable: 0,
+                undetectable: 0
+            })
+            return res.status(200).json(result)
+        }
+
+        return res.status(400).send(err)
+
+
+    })
+})
+
 
 module.exports = app

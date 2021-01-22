@@ -20,22 +20,6 @@ app.get("/:id", (req, res) => {
   );
 });
 
-// TODO: PUT - /:patient_id
-
-// app.put("/:id", (req, res) => {
-//   console.log("Editing patient info with id: " + req.params.id);
-//   var id = req.params.id;
-//   connection.query(
-//     "SELECT * FROM patient WHERE insurance_id = ? ",
-//     [id],
-//     (err, rows, fields) => {
-//       console.log("Sucess");
-
-//       const result = { ...rows[0], id: rows[0].insurance_id };
-//       res.json(result);
-//     }
-//   );
-// });
 
 app.put("/:edit_id", function (req, res) {
   let id = req.params["edit_id"];
