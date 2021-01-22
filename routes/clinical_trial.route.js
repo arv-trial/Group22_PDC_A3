@@ -14,7 +14,7 @@ app.get('/', (req, res) => {
 
         res.json(rows)
     })
-    
+
 })
 
 app.get('/:id/clinical-trial', (req, res) => {
@@ -47,6 +47,27 @@ app.delete('/:id/clinical_trial', (req, res) => {
     })
 })
 
+app.get('/khangthuoc', (req, res) => {
+    connection.query(`SELECT id_clinical_trial, after_6_month, cd4_init_record, (after_6_month-cd4_init_record) as subtract FROM clinical_trial`, (err, rows, fields) => {
+        if (!err) {
+            console.log('rows', rows)
+            let result = rows.reduce((accumulator, currentValue) => {
+                if (currentValue.subtract < 50)
+                    accumulator['resistantPatient'] += 1
+                accumulator['nonResistantPatient'] += 1
+                console.log('accumulator', accumulator)
+                return accumulator
+            }, {
+                resistantPatient: 0,
+                nonResistantPatient: 0
+            })
+            return res.status(200).json(result)
+        }
 
+        return res.status(400).send(err)
+
+
+    })
+})
 
 module.exports = app
