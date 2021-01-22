@@ -57,42 +57,7 @@ app.put("/:company", function (req, res) {
     );
   });
   
-//   app.get("/", (req, res) => {
-//     connection.query("SELECT * FROM company", (err, rows, fields) => {
-//       console.log("Thanh cong");
-//       console.log("rows", rows);
-//       const result = rows.map((row) => ({ ...row, id: row.insurance_id }));
-//       console.log("result", result);
-  
-//       res.header("Access-Control-Expose-Headers", "Content-Range");
-//       res.header("Content-Range", "bytes : 0-9/*");
-  
-//       res.json(result);
-//     });
-//   });
-  
-//   app.delete("/:delete_id", (req, res) => {
-//     const id = req.params["delete_id"];
-//     console.log("id", id);
-//     // const query = `DELETE FROM patient WHERE insurance_id =  ${id} `
-//     connection.query(
-//       "DELETE FROM company WHERE company_name = ?",
-//       [id],
-//       (err, rows, fields) => {
-//         console.log("rows", rows);
-//         if (!err) {
-//           connection.query(
-//             "DELETE FROM company WHERE insurance_id =  ?",
-//             [id],
-//             (err, rows, fields) => {
-//               console.log("Success");
-//               res.json(rows);
-//             }
-//           );
-//         }
-//       }
-//     );
-//   });
+
   
 
 module.exports = app
