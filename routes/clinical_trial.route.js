@@ -47,7 +47,7 @@ app.delete('/:id/clinical_trial', (req, res) => {
     })
 })
 
-app.get('/khangthuoc', (req, res) => {
+app.get('/resistant', (req, res) => {
     connection.query(`SELECT id_clinical_trial, after_6_month, cd4_init_record, (after_6_month-cd4_init_record) as subtract FROM clinical_trial`, (err, rows, fields) => {
         if (!err) {
             console.log('rows', rows)
@@ -55,7 +55,6 @@ app.get('/khangthuoc', (req, res) => {
                 if (currentValue.subtract < 50)
                     accumulator['resistantPatient'] += 1
                 accumulator['nonResistantPatient'] += 1
-                console.log('accumulator', accumulator)
                 return accumulator
             }, {
                 resistantPatient: 0,
