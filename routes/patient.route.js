@@ -5,14 +5,17 @@ const connection = getConnection();
 
 app.get("/:id", (req, res) => {
   console.log("Fetching patient with id: " + req.params.id);
-  var id = req.params.id;
+  var id = "iid" + req.params.id;
   connection.query(
     "SELECT * FROM patient WHERE insurance_id = ? ",
     [id],
     (err, rows, fields) => {
       console.log("Sucess");
 
-      const result = { ...rows[0], id: rows[0].insurance_id };
+      const result = {
+        ...rows[0],
+        id: parseInt(rows[0].insurance_id.slice(3))
+      };
       res.header("Access-Control-Expose-Headers", "Content-Range");
       res.header("Content-Range", "bytes : 0-9/*");
       res.json(result);
@@ -22,7 +25,7 @@ app.get("/:id", (req, res) => {
 
 
 app.put("/:edit_id", function (req, res) {
-  let id = req.params["edit_id"];
+  let id = "iid" + req.params["edit_id"];
   let name = req.params.patient_name;
   let birthday = req.params.dateofbirth;
   let gender = req.params.gender;
@@ -43,6 +46,11 @@ app.post("/", (req, res) => {
 
   const patientName = req.body.patient_name;
   const insurance_id = req.body.insurance_id;
+
+  const body = {
+    ...req.body,
+    insurance_id: parseInt(req.body.id.slice(3))
+  }
 
   console.log("req.body", req.body);
 
@@ -69,7 +77,10 @@ app.get("/", (req, res) => {
   connection.query("SELECT * FROM patient", (err, rows, fields) => {
     console.log("Thanh cong");
     console.log("rows", rows);
-    const result = rows.map((row) => ({ ...row, id: row.insurance_id }));
+    const result = rows.map((row) => ({
+      ...row,
+      id: parseInt(row.insurance_id.slice(3))
+    }));
     console.log("result", result);
 
     res.header("Access-Control-Expose-Headers", "Content-Range");
@@ -80,9 +91,8 @@ app.get("/", (req, res) => {
 });
 
 app.delete("/:delete_id", (req, res) => {
-  const id = req.params["delete_id"];
+  const id = "iid" + req.params["delete_id"];
   console.log("id", id);
-  // const query = `DELETE FROM patient WHERE insurance_id =  ${id} `
   connection.query(
     "DELETE FROM clinical_trial WHERE insurance_id =  ?",
     [id],
