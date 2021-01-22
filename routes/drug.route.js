@@ -35,10 +35,8 @@ app.get('/symtom', (req, res) => {
     FROM ((clinical_trial
     INNER JOIN result ON clinical_trial.id_clinical_trial = result.id_clinical_trail)
     INNER JOIN side_effect ON result.id_side_effect = side_effect.id_side_effect)`, (err, rows, fields) => {
-        if (!err)
-            return res.status(200).json(rows)
-
-        return res.status(400).send(err)
+         return (!err?         
+             res.status(200).json(rows) :  res.status(400).send(err))
 
     })
 })
