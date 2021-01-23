@@ -14,7 +14,7 @@ app.get("/:id", (req, res) => {
 
       const result = {
         ...rows[0],
-        id: parseInt(rows[0].insurance_id.slice(3))
+        id: parseInt(rows[0].insurance_id.slice(3)),
       };
       res.header("Access-Control-Expose-Headers", "Content-Range");
       res.header("Content-Range", "bytes : 0-9/*");
@@ -22,7 +22,6 @@ app.get("/:id", (req, res) => {
     }
   );
 });
-
 
 app.put("/:edit_id", function (req, res) {
   let id = "iid" + req.params["edit_id"];
@@ -35,6 +34,8 @@ app.put("/:edit_id", function (req, res) {
     function (error, results, fields) {
       if (error) throw error;
       console.log(results);
+      res.header("Access-Control-Expose-Headers", "Content-Range");
+      res.header("Content-Range", "bytes : 0-9/*");
       res.end(JSON.stringify(results));
     }
   );
@@ -49,8 +50,8 @@ app.post("/", (req, res) => {
 
   const body = {
     ...req.body,
-    insurance_id: parseInt(req.body.id.slice(3))
-  }
+    insurance_id: parseInt(req.body.id.slice(3)),
+  };
 
   console.log("req.body", req.body);
 
@@ -67,6 +68,8 @@ app.post("/", (req, res) => {
 
       // console.log('Insert a new user with id: ', result.insertedId);
       console.log("result", result);
+      res.header("Access-Control-Expose-Headers", "Content-Range");
+      res.header("Content-Range", "bytes : 0-9/*");
       res.status(200).json(result);
       // res.end()
     }
@@ -79,7 +82,7 @@ app.get("/", (req, res) => {
     console.log("rows", rows);
     const result = rows.map((row) => ({
       ...row,
-      id: parseInt(row.insurance_id.slice(3))
+      id: parseInt(row.insurance_id.slice(3)),
     }));
     console.log("result", result);
 
@@ -104,6 +107,10 @@ app.delete("/:delete_id", (req, res) => {
           [id],
           (err, rows, fields) => {
             console.log("Success");
+
+            res.header("Access-Control-Expose-Headers", "Content-Range");
+    res.header("Content-Range", "bytes : 0-9/*");
+    
             res.json(rows);
           }
         );

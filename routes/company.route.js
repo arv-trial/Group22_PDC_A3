@@ -24,6 +24,10 @@ app.put("/:company", function (req, res) {
       function (error, results, fields) {
         if (error) throw error;
         console.log(results);
+        
+        res.header("Access-Control-Expose-Headers", "Content-Range");
+        res.header("Content-Range", "bytes : 0-9/*");
+
         res.end(JSON.stringify(results));
       }
     );
@@ -51,6 +55,10 @@ app.put("/:company", function (req, res) {
   
         // console.log('Insert a new user with id: ', result.insertedId);
         console.log("result", result);
+
+        res.header("Access-Control-Expose-Headers", "Content-Range");
+        res.header("Content-Range", "bytes : 0-9/*");
+        
         res.status(200).json(result);
         // res.end()
       }
