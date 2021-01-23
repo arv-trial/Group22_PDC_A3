@@ -54,7 +54,7 @@ app.get('/resistant', (req, res) => {
             let result = rows.reduce((accumulator, currentValue) => {
                 currentValue.subtract < 50 ?
                     accumulator['resistantPatient'] += 1 :
-                accumulator['nonResistantPatient'] += 1
+                    accumulator['nonResistantPatient'] += 1
                 return accumulator
             }, {
                 resistantPatient: 0,
@@ -91,5 +91,26 @@ app.get('/viral_load', (req, res) => {
     })
 })
 
+// Update
+app.put('/:id', (req, res) => {
+    const id = req.params['id']
+    console.log('id', id)
+    const body = req.body;
+    console.log('body', body)
+    console.log('body', body)
+
+    connection.query('UPDATE clinical_trial SET ? WHERE id_clinical_trial = ?', [body, id], (err, rows, fields) => {
+        if (!err) {
+            console.log('rows', rows)
+            return res.status(200).json(rows)
+        } else {
+            return res.status(400).send(err)
+        }
+
+    })
+    // console.log("Trying to create a new user...")
+    // console.log("How do u get the data?")
+    // res.end()
+})
 
 module.exports = app
