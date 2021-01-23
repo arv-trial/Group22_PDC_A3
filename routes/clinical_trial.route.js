@@ -14,13 +14,13 @@ app.get("/", (req, res) => {
 
       res.json(rows);
     }
-  );
+  );    
 });
 
 app.get("/:id/clinical-trial", (req, res) => {
   const id = req.params["id"];
   connection.query(
-    "SELECT * patient.insurance_id as id FROM patient, clinical_trial WHERE patient.insurance_id =  AND patient.insurance_id = clinical_trial.insurance_id",
+    "SELECT *, patient.insurance_id as id FROM patient, clinical_trial WHERE patient.insurance_id =  AND patient.insurance_id = clinical_trial.insurance_id",
     [id],
     (err, rows, fields) => {
       console.log("Thanh cong");
