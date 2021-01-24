@@ -18,7 +18,8 @@ app.use(express.urlencoded({
 }));
 app.use(cookieParser());
 app.use(cors({
-    origin: '*'
+    origin: '*', 
+    methods:'GET, PUT, POST, DELETE, OPTIONS'
 }))
 
 app.use('/patient', require('./routes/patient.route'))
