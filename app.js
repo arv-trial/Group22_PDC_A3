@@ -17,10 +17,15 @@ app.use(express.urlencoded({
     extended: false
 }));
 app.use(cookieParser());
+
 app.use(cors({
-    origin: '*', 
-    methods:'GET, PUT, POST, DELETE, OPTIONS'
+    origin: '*',
+    methods: 'GET,PUT,POST,DELETE,OPTIONS',
+    optionsSuccessStatus: '200',
+    allowedHeaders: 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept',
 }))
+
+app.options('*', cors())
 
 app.use('/patient', require('./routes/patient.route'))
 app.use('/drug', require('./routes/drug.route'))
@@ -29,17 +34,12 @@ app.use('/side_effect', require('./routes/side_effect.route'))
 app.use('/clinical_trial', require('./routes/clinical_trial.route'))
 app.use('/result', require('./routes/result.route'))
 
-
-
-app.use((req, res, next) => {
-    res.status(404).send("NOT FOUND");
-  });
-  
-  app.use(function (err, req, res, next) {
+app.use(function (err, req, res, next) {
     const code = err.code || 500;
     console.log(code, err.message);
     res.status(code).send(err.message);
-  });
+});
+
 
 app.use(logger('combined'))
 
