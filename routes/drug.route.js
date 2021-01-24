@@ -32,9 +32,9 @@ app.get("/symptom", (req, res, next) => {
         console.log("rows", rows);
         // res.header("Access-Control-Expose-Headers", "Content-Range");
         // res.header("Content-Range", "bytes : 0-15/*");
-        res.status(200).json(rows);
+        return res.status(200).json(rows);
       } else {
-        res.status(400).send(err);
+        return res.status(400).send(err);
       }
     }
   );

@@ -23,7 +23,7 @@ app.get("/:id", (req, res, next) => {
         // res.header("Content-Range", "bytes : 0-9/*");
         return res.status(200).json(result);
       }
-      res.status(404).json({
+      return res.status(404).json({
         message: 'Item not found'
       })
     }
@@ -56,10 +56,13 @@ app.put("/:edit_id", function (req, res, next) {
           affectedRows
         } = results
         if (affectedRows)
-          res.status(200).json({
-            data: req.body
+          return res.status(200).json({
+            data: {
+              id: parseInt(req.params["edit_id"]),
+              ...req.body
+            }
           })
-        res.status(404).json({
+        return res.status(404).json({
           message: "Item not found"
         })
 
