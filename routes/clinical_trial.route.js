@@ -11,9 +11,6 @@ app.get("/", (req, res, next) => {
         next(err)
       console.log("Thanh cong");
 
-      // res.header("Access-Control-Expose-Headers", "Content-Range");
-      // res.header("Content-Range", "bytes : 0-9/*");
-
       res.json(rows);
     }
   );

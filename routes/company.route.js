@@ -8,8 +8,6 @@ app.get('/', (req, res, next) => {
     connection.query('SELECT *, company.company_name as id FROM company', (err, rows, fields) => {
       if(err) next(err)
         console.log('Thanh cong')
-        // res.header("Access-Control-Expose-Headers", "Content-Range");
-        // res.header("Content-Range", "bytes : 0-9/*");
         res.json(rows)
     })
 })
@@ -25,9 +23,6 @@ app.put("/:company", function (req, res, next) {
       function (error, results, fields) {
         if(error) next(error)
         console.log(results);
-        
-        // res.header("Access-Control-Expose-Headers", "Content-Range");
-        // res.header("Content-Range", "bytes : 0-9/*");
 
         res.end(JSON.stringify(results));
       }

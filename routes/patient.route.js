@@ -65,31 +65,23 @@ app.put("/:edit_id", function (req, res, next) {
 app.post("/", (req, res, next) => {
   console.log("Trying to create a new user...");
   console.log("How do we get the data?");
-
-  const patientName = req.body.patient_name;
-  const insurance_id = req.body.insurance_id;
-
+  const {
+    id,
+    ...rest
+  } = req.body
   const body = {
-    ...req.body,
-    insurance_id: parseInt(req.body.id.slice(3)),
-  };
-
-  console.log("req.body", req.body);
-
-  const queryString = "INSERT INTO `patient` VALUES (?)";
+    ...rest,
+    insurance_id: "iid" + req.body.id
+  }
+  const queryString = "INSERT INTO `patient` SET ?";
   connection.query(
     queryString,
-    [Object.values(req.body)],
+    [body],
     (err, result, fields) => {
       if (err)
         next(err)
-
-      // console.log('Insert a new user with id: ', result.insertedId);
-      console.log("result", result);
-      // res.header("Access-Control-Expose-Headers", "Content-Range");
-      // res.header("Content-Range", "bytes : 0-9/*");
-      res.status(200).json(result);
-      // res.end()
+      else
+        return res.status(200).json(result);
     }
   );
 });
