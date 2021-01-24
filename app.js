@@ -22,11 +22,16 @@ app.use(cors({
     origin: '*',
     methods: 'GET,PUT,POST,DELETE,OPTIONS',
     optionsSuccessStatus: '200',
-    // res.header("Access-Control-Expose-Headers", "Content-Range");
-                // res.header("Content-Range", "bytes : 0-9/*");
+
 }))
 
 app.options('*', cors())
+
+app.use(function (req, res, next) {
+    res.header("Access-Control-Expose-Headers", "Content-Range");
+    res.header("Content-Range", "bytes : 0-9/*");
+    next();
+});
 
 app.use('/patient', cors(), require('./routes/patient.route'))
 app.use('/drug', cors(), require('./routes/drug.route'))
