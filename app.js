@@ -33,11 +33,11 @@ app.use(function (req, res, next) {
 });
 
 app.use('/patient', cors(), require('./routes/patient.route'))
-app.use('drug', cors(), require('./routes/drug.route'))
-app.use('company', cors(), require('./routes/company.route'))
-app.use('side_effect', cors(), require('./routes/side_effect.route'))
-app.use('clinical_trial', cors(), require('./routes/clinical_trial.route'))
-app.use('result', cors(), require('./routes/result.route'))
+app.use('/drug', cors(), require('./routes/drug.route'))
+app.use('/company', cors(), require('./routes/company.route'))
+app.use('/side_effect', cors(), require('./routes/side_effect.route'))
+app.use('/clinical_trial', cors(), require('./routes/clinical_trial.route'))
+app.use('/result', cors(), require('./routes/result.route'))
 
 app.use(function (err, req, res, next) {
     const code = err.code || 500;
