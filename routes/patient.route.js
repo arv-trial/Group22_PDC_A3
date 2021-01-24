@@ -100,8 +100,8 @@ app.get("/", (req, res, next) => {
     }));
     console.log("result", result);
 
-    // res.header("Access-Control-Expose-Headers", "Content-Range");
-    // res.header("Content-Range", "bytes : 0-9/*");
+    res.header("Access-Control-Expose-Headers", "Content-Range");
+    res.header("Content-Range", "bytes : 0-9/*");
 
     res.json(result);
   });

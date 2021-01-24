@@ -22,16 +22,18 @@ app.use(cors({
     origin: '*',
     methods: 'GET,PUT,POST,DELETE,OPTIONS',
     optionsSuccessStatus: '200',
+    // res.header("Access-Control-Expose-Headers", "Content-Range");
+                // res.header("Content-Range", "bytes : 0-9/*");
 }))
 
 app.options('*', cors())
 
-app.use('/patient', require('./routes/patient.route'))
-app.use('/drug', require('./routes/drug.route'))
-app.use('/company', require('./routes/company.route'))
-app.use('/side_effect', require('./routes/side_effect.route'))
-app.use('/clinical_trial', require('./routes/clinical_trial.route'))
-app.use('/result', require('./routes/result.route'))
+app.use('/patient', cors(), require('./routes/patient.route'))
+app.use('/drug', cors(), require('./routes/drug.route'))
+app.use('/company', cors(), require('./routes/company.route'))
+app.use('/side_effect', cors(), require('./routes/side_effect.route'))
+app.use('/clinical_trial', cors(), require('./routes/clinical_trial.route'))
+app.use('/result', cors(), require('./routes/result.route'))
 
 app.use(function (err, req, res, next) {
     const code = err.code || 500;
