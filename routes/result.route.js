@@ -8,7 +8,7 @@ app.get('/', (req, res) => {
     connection.query('SELECT * FROM result', (err, rows, fields) => {
         console.log('Thanh cong')
         res.header("Access-Control-Expose-Headers", "Content-Range");
-        res.header("Content-Range", "bytes : 0-9/*");
+        res.header("Content-Range", "bytes : 0-15/*");
         res.json(rows)
     })
 })
