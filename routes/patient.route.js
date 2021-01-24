@@ -4,7 +4,6 @@ const app = express.Router();
 const connection = getConnection();
 
 app.get("/:id", (req, res, next) => {
-  console.log("Fetching patient with id: " + req.params.id);
   var id = "iid" + req.params.id;
   connection.query(
     "SELECT * FROM patient WHERE insurance_id = ? ",
@@ -12,24 +11,31 @@ app.get("/:id", (req, res, next) => {
     (err, rows, fields) => {
       if (err)
         next(err)
+      console.log('rows', rows)
       if (rows.length) {
 
         const result = {
           ...rows[0],
           id: parseInt(rows[0].insurance_id.slice(3)),
         };
+        console.log('result', result)
         // res.header("Access-Control-Expose-Headers", "Content-Range");
         // res.header("Content-Range", "bytes : 0-9/*");
-        res.json(result);
+        return res.status(200).json(result);
       }
-      res.status(404).json('Item not found')
+      res.status(404).json({
+        message: 'Item not found'
+      })
     }
   );
 });
 
 app.put("/:edit_id", function (req, res, next) {
   let insurance_id = "iid" + req.params["edit_id"];
-  const { id, ...rest } = req.body
+  const {
+    id,
+    ...rest
+  } = req.body
 
   connection.query(
     "UPDATE `patient` SET ? WHERE insurance_id = ?", [rest, insurance_id],
@@ -46,10 +52,16 @@ app.put("/:edit_id", function (req, res, next) {
         // res.set("X-total-count", total)
         // res.end(JSON.stringify(results))
 
-        const { affectedRows } = results
+        const {
+          affectedRows
+        } = results
         if (affectedRows)
-          res.status(200).json({ data: req.body })
-        res.status(404).json({ message: "Item not found" })
+          res.status(200).json({
+            data: req.body
+          })
+        res.status(404).json({
+          message: "Item not found"
+        })
 
       };
     }
