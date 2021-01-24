@@ -11,8 +11,8 @@ app.get("/", (req, res, next) => {
         next(err)
       console.log("Thanh cong");
       console.log(res);
-      res.header("Access-Control-Expose-Headers", "Content-Range");
-      res.header("Content-Range", "bytes : 0-9/*");
+      // res.header("Access-Control-Expose-Headers", "Content-Range");
+      // res.header("Content-Range", "bytes : 0-9/*");
       res.json(rows);
     }
   );
@@ -30,8 +30,8 @@ app.get("/symptom", (req, res, next) => {
         next(err)
       if (!err) {
         console.log("rows", rows);
-        res.header("Access-Control-Expose-Headers", "Content-Range");
-        res.header("Content-Range", "bytes : 0-15/*");
+        // res.header("Access-Control-Expose-Headers", "Content-Range");
+        // res.header("Content-Range", "bytes : 0-15/*");
         res.status(200).json(rows);
       } else {
         res.status(400).send(err);

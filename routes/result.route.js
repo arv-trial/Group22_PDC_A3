@@ -9,8 +9,8 @@ app.get('/', (req, res, next) => {
         if (err)
         next(err)
         console.log('Thanh cong')
-        res.header("Access-Control-Expose-Headers", "Content-Range");
-        res.header("Content-Range", "bytes : 0-15/*");
+        // res.header("Access-Control-Expose-Headers", "Content-Range");
+        // res.header("Content-Range", "bytes : 0-15/*");
         res.json(rows)
     })
 })

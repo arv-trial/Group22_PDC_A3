@@ -11,8 +11,8 @@ app.get("/", (req, res, next) => {
         next(err)
       console.log("Thanh cong");
 
-      res.header("Access-Control-Expose-Headers", "Content-Range");
-      res.header("Content-Range", "bytes : 0-9/*");
+      // res.header("Access-Control-Expose-Headers", "Content-Range");
+      // res.header("Content-Range", "bytes : 0-9/*");
 
       res.json(rows);
     }
@@ -29,8 +29,8 @@ app.get("/:id/clinical-trial", (req, res, next) => {
         next(err)
       console.log("Thanh cong");
 
-      res.header("Access-Control-Expose-Headers", "Content-Range");
-      res.header("Content-Range", "bytes : 0-9/*");
+      // res.header("Access-Control-Expose-Headers", "Content-Range");
+      // res.header("Content-Range", "bytes : 0-9/*");
 
       res.json(rows);
     }
@@ -55,8 +55,8 @@ app.delete("/:id/clinical_trial", (req, res, next) => {
           (err, rows, fields) => {
             console.log("Success");
 
-            res.header("Access-Control-Expose-Headers", "Content-Range");
-            res.header("Content-Range", "bytes : 0-9/*");
+            // res.header("Access-Control-Expose-Headers", "Content-Range");
+            // res.header("Content-Range", "bytes : 0-9/*");
 
             res.json(rows);
           }
@@ -83,8 +83,8 @@ app.get("/resistant", (req, res, next) => {
           return { ...accumulator };
         }, {});
 
-        res.header("Access-Control-Expose-Headers", "Content-Range");
-        res.header("Content-Range", "bytes : 0-9/*");
+        // res.header("Access-Control-Expose-Headers", "Content-Range");
+        // res.header("Content-Range", "bytes : 0-9/*");
 
         return res.status(200).json(result);
       }
@@ -114,8 +114,8 @@ app.get("/viral_load", (req, res, next) => {
             undetectable: 0,
           }
         );
-        res.header("Access-Control-Expose-Headers", "Content-Range");
-        res.header("Content-Range", "bytes : 0-9/*");
+        // res.header("Access-Control-Expose-Headers", "Content-Range");
+        // res.header("Content-Range", "bytes : 0-9/*");
         return res.status(200).json(result);
       }
 

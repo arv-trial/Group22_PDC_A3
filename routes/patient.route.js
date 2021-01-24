@@ -18,8 +18,8 @@ app.get("/:id", (req, res, next) => {
           ...rows[0],
           id: parseInt(rows[0].insurance_id.slice(3)),
         };
-        res.header("Access-Control-Expose-Headers", "Content-Range");
-        res.header("Content-Range", "bytes : 0-9/*");
+        // res.header("Access-Control-Expose-Headers", "Content-Range");
+        // res.header("Content-Range", "bytes : 0-9/*");
         res.json(result);
       }
       res.status(404).json('Item not found')
@@ -40,9 +40,9 @@ app.put("/:edit_id", function (req, res, next) {
         // let total = results.length
         // console.log(total)
         // console.log(results);
-        res.header("Access-Control-Expose-Headers", "Content-Range");
-        res.header("Content-Range", "bytes : 0-9/*");
-        res.header('Access-Control-Expose-Headers', 'X-Total-Count')
+        // res.header("Access-Control-Expose-Headers", "Content-Range");
+        // res.header("Content-Range", "bytes : 0-9/*");
+        // res.header('Access-Control-Expose-Headers', 'X-Total-Count')
         // res.set("X-total-count", total)
         // res.end(JSON.stringify(results))
 
@@ -80,8 +80,8 @@ app.post("/", (req, res, next) => {
 
       // console.log('Insert a new user with id: ', result.insertedId);
       console.log("result", result);
-      res.header("Access-Control-Expose-Headers", "Content-Range");
-      res.header("Content-Range", "bytes : 0-9/*");
+      // res.header("Access-Control-Expose-Headers", "Content-Range");
+      // res.header("Content-Range", "bytes : 0-9/*");
       res.status(200).json(result);
       // res.end()
     }
@@ -100,8 +100,8 @@ app.get("/", (req, res, next) => {
     }));
     console.log("result", result);
 
-    res.header("Access-Control-Expose-Headers", "Content-Range");
-    res.header("Content-Range", "bytes : 0-9/*");
+    // res.header("Access-Control-Expose-Headers", "Content-Range");
+    // res.header("Content-Range", "bytes : 0-9/*");
 
     res.json(result);
   });
@@ -137,8 +137,8 @@ app.delete("/:delete_id", (req, res, next) => {
                   next(err)
                 console.log("Success");
 
-                res.header("Access-Control-Expose-Headers", "Content-Range");
-                res.header("Content-Range", "bytes : 0-9/*");
+                // res.header("Access-Control-Expose-Headers", "Content-Range");
+                // res.header("Content-Range", "bytes : 0-9/*");
 
                 res.json(rows);
               }
