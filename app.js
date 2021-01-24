@@ -22,7 +22,6 @@ app.use(cors({
     origin: '*',
     methods: 'GET,PUT,POST,DELETE,OPTIONS',
     optionsSuccessStatus: '200',
-    allowedHeaders: 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept',
 }))
 
 app.options('*', cors())
