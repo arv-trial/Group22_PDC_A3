@@ -43,15 +43,6 @@ app.put("/:edit_id", function (req, res, next) {
       if (error)
         next(error)
       else {
-        // let total = results.length
-        // console.log(total)
-        // console.log(results);
-        // res.header("Access-Control-Expose-Headers", "Content-Range");
-        // res.header("Content-Range", "bytes : 0-9/*");
-        // res.header('Access-Control-Expose-Headers', 'X-Total-Count')
-        // res.set("X-total-count", total)
-        // res.end(JSON.stringify(results))
-
         const {
           affectedRows
         } = results
