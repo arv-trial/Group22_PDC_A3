@@ -14,7 +14,7 @@ app.get("/", (req, res) => {
 
       res.json(rows);
     }
-  );    
+  );
 });
 
 app.get("/:id/clinical-trial", (req, res) => {
@@ -63,22 +63,30 @@ app.delete("/:id/clinical_trial", (req, res) => {
 
 app.get("/resistant", (req, res) => {
   connection.query(
-    `SELECT id_clinical_trial, after_6_month, cd4_init_record, (after_6_month-cd4_init_record) as subtract FROM clinical_trial`,
+    // `SELECT id_clinical_trial, after_6_month, cd4_init_record, (after_6_month-cd4_init_record) as subtract FROM clinical_trial`,
+    `SELECT COUNT(*) as value, CASE WHEN (after_6_month-cd4_init_record) < 50 THEN "resistantPatient" ELSE "nonResistantPatient" END AS result
+    FROM clinical_trial
+    GROUP BY result`,
     (err, rows, fields) => {
       if (!err) {
-        console.log("rows", rows);
-        let result = rows.reduce(
-          (accumulator, currentValue) => {
-            currentValue.subtract < 50
-              ? (accumulator["resistantPatient"] += 1)
-              : (accumulator["nonResistantPatient"] += 1);
-            return accumulator;
-          },
-          {
-            resistantPatient: 0,
-            nonResistantPatient: 0,
-          }
-        );
+        // console.log("rows", rows);
+        // let result = rows.reduce(
+        //   (accumulator, currentValue) => {
+        //     currentValue.subtract < 50
+        //       ? (accumulator["resistantPatient"] += 1)
+        //       : (accumulator["nonResistantPatient"] += 1);
+        //     return accumulator;
+        //   },
+        //   {
+        //     resistantPatient: 0,
+        //     nonResistantPatient: 0,
+        //   }
+        // );
+        // const result = {}
+        const result = rows.reduce((accumulator, currentValue) => {
+          accumulator[currentValue.result] = currentValue.value;
+          return { ...accumulator };
+        }, {});
 
         res.header("Access-Control-Expose-Headers", "Content-Range");
         res.header("Content-Range", "bytes : 0-9/*");
@@ -119,30 +127,32 @@ app.get("/viral_load", (req, res) => {
   );
 });
 
-
 // Update
-app.put('/:id', (req, res) => {
-    const id = req.params['id']
-    console.log('id', id)
-    const body = req.body;
-    console.log('body', body)
-    console.log('body', body)
+app.put("/:id", (req, res) => {
+  const id = req.params["id"];
+  console.log("id", id);
+  const body = req.body;
+  console.log("body", body);
+  console.log("body", body);
 
-    connection.query('UPDATE clinical_trial SET ? WHERE id_clinical_trial = ?', [body, id], (err, rows, fields) => {
-        if (!err) {
-            console.log('rows', rows)
-            
+  connection.query(
+    "UPDATE clinical_trial SET ? WHERE id_clinical_trial = ?",
+    [body, id],
+    (err, rows, fields) => {
+      if (!err) {
+        console.log("rows", rows);
+
         res.header("Access-Control-Expose-Headers", "Content-Range");
         res.header("Content-Range", "bytes : 0-9/*");
-            return res.status(200).json(rows)
-        } else {
-            return res.status(400).send(err)
-        }
+        return res.status(200).json(rows);
+      } else {
+        return res.status(400).send(err);
+      }
+    }
+  );
+  // console.log("Trying to create a new user...")
+  // console.log("How do u get the data?")
+  // res.end()
+});
 
-    })
-    // console.log("Trying to create a new user...")
-    // console.log("How do u get the data?")
-    // res.end()
-})
-
-module.exports = app
+module.exports = app;

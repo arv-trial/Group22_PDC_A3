@@ -97,24 +97,34 @@ app.delete("/:delete_id", (req, res) => {
   const id = "iid" + req.params["delete_id"];
   console.log("id", id);
   connection.query(
-    "DELETE FROM clinical_trial WHERE insurance_id =  ?",
+    `DELETE result
+    FROM result 
+    INNER JOIN clinical_trial 
+    ON result.id_clinical_trail = clinical_trial.id_clinical_trial 
+    WHERE clinical_trial.insurance_id = ?`,
     [id],
     (err, rows, fields) => {
-      console.log("rows", rows);
-      if (!err) {
-        connection.query(
-          "DELETE FROM patient WHERE insurance_id =  ?",
-          [id],
-          (err, rows, fields) => {
-            console.log("Success");
+      connection.query(
+        "DELETE FROM clinical_trial WHERE insurance_id =  ?",
+        [id],
+        (err, rows, fields) => {
+          console.log("rows", rows);
+          if (!err) {
+            connection.query(
+              "DELETE FROM patient WHERE insurance_id =  ?",
+              [id],
+              (err, rows, fields) => {
+                console.log("Success");
 
-            res.header("Access-Control-Expose-Headers", "Content-Range");
-    res.header("Content-Range", "bytes : 0-9/*");
-    
-            res.json(rows);
+                res.header("Access-Control-Expose-Headers", "Content-Range");
+                res.header("Content-Range", "bytes : 0-9/*");
+
+                res.json(rows);
+              }
+            );
           }
-        );
-      }
+        }
+      );
     }
   );
 });
