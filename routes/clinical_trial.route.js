@@ -3,10 +3,12 @@ const getConnection = require("../db");
 const app = express.Router();
 const connection = getConnection();
 
-app.get("/", (req, res) => {
+app.get("/", (req, res, next) => {
   connection.query(
     "SELECT *, clinical_trial.id_clinical_trial as id FROM clinical_trial",
     (err, rows, fields) => {
+      if (err)
+        next(err)
       console.log("Thanh cong");
 
       res.header("Access-Control-Expose-Headers", "Content-Range");
@@ -17,12 +19,14 @@ app.get("/", (req, res) => {
   );
 });
 
-app.get("/:id/clinical-trial", (req, res) => {
+app.get("/:id/clinical-trial", (req, res, next) => {
   const id = req.params["id"];
   connection.query(
     `SELECT *, patient.insurance_id as id FROM patient, clinical_trial WHERE patient.insurance_id =  AND patient.insurance_id = clinical_trial.insurance_id`,
     [id],
     (err, rows, fields) => {
+      if (err)
+        next(err)
       console.log("Thanh cong");
 
       res.header("Access-Control-Expose-Headers", "Content-Range");
@@ -33,7 +37,7 @@ app.get("/:id/clinical-trial", (req, res) => {
   );
 });
 
-app.delete("/:id/clinical_trial", (req, res) => {
+app.delete("/:id/clinical_trial", (req, res, next) => {
   const id = req.params["id"];
   console.log("id", id);
   // const query = `DELETE FROM patient WHERE insurance_id =  ${id} `
@@ -41,6 +45,8 @@ app.delete("/:id/clinical_trial", (req, res) => {
     "DELETE FROM result WHERE id_clinical_trail = ?",
     [id],
     (err, rows, fields) => {
+      if (err)
+        next(err)
       console.log("rows", rows);
       if (!err) {
         connection.query(
@@ -61,7 +67,7 @@ app.delete("/:id/clinical_trial", (req, res) => {
   );
 });
 
-app.get("/resistant", (req, res) => {
+app.get("/resistant", (req, res, next) => {
   connection.query(
     `SELECT COUNT(*) as value, 
     CASE WHEN (after_6_month-cd4_init_record) < 50 
@@ -69,6 +75,8 @@ app.get("/resistant", (req, res) => {
     FROM clinical_trial
     GROUP BY result`,
     (err, rows, fields) => {
+      if (err)
+        next(err)
       if (!err) {
         const result = rows.reduce((accumulator, currentValue) => {
           accumulator[currentValue.result] = currentValue.value;
@@ -86,10 +94,12 @@ app.get("/resistant", (req, res) => {
   );
 });
 
-app.get("/viral_load", (req, res) => {
+app.get("/viral_load", (req, res, next) => {
   connection.query(
     `SELECT undetectable as status FROM clinical_trial `,
     (err, rows, fields) => {
+      if (err)
+        next(err)
       if (!err) {
         console.log("rows", rows);
         let result = rows.reduce(
@@ -115,7 +125,7 @@ app.get("/viral_load", (req, res) => {
 });
 
 // Update
-app.put("/:id", (req, res) => {
+app.put("/:id", (req, res, next) => {
   const id = req.params["id"];
   console.log("id", id);
   const body = req.body;
@@ -126,6 +136,8 @@ app.put("/:id", (req, res) => {
     "UPDATE clinical_trial SET ? WHERE id_clinical_trial = ?",
     [body, id],
     (err, rows, fields) => {
+      if (err)
+        next(err)
       if (!err) {
         console.log("rows", rows);
 

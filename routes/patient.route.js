@@ -3,13 +3,15 @@ const getConnection = require("../db");
 const app = express.Router();
 const connection = getConnection();
 
-app.get("/:id", (req, res) => {
+app.get("/:id", (req, res, next) => {
   console.log("Fetching patient with id: " + req.params.id);
   var id = "iid" + req.params.id;
   connection.query(
     "SELECT * FROM patient WHERE insurance_id = ? ",
     [id],
     (err, rows, fields) => {
+      if (err)
+        next(err)
       if (rows.length) {
 
         const result = {
@@ -25,14 +27,15 @@ app.get("/:id", (req, res) => {
   );
 });
 
-app.put("/:edit_id", function (req, res) {
+app.put("/:edit_id", function (req, res, next) {
   let insurance_id = "iid" + req.params["edit_id"];
   const { id, ...rest } = req.body
 
   connection.query(
     "UPDATE `patient` SET ? WHERE insurance_id = ?", [rest, insurance_id],
     function (error, results, fields) {
-      if (error) { throw error }
+      if (error)
+        next(error)
       else {
         // let total = results.length
         // console.log(total)
@@ -43,14 +46,17 @@ app.put("/:edit_id", function (req, res) {
         // res.set("X-total-count", total)
         // res.end(JSON.stringify(results))
 
-        res.status(200).json({ data: req.body })
+        const { affectedRows } = results
+        if (affectedRows)
+          res.status(200).json({ data: req.body })
+        res.status(404).json({ message: "Item not found" })
 
       };
     }
   );
 });
 
-app.post("/", (req, res) => {
+app.post("/", (req, res, next) => {
   console.log("Trying to create a new user...");
   console.log("How do we get the data?");
 
@@ -69,11 +75,8 @@ app.post("/", (req, res) => {
     queryString,
     [Object.values(req.body)],
     (err, result, fields) => {
-      if (err) {
-        console.log("Failed to insert new user:" + err);
-        res.sendStatus(500);
-        return;
-      }
+      if (err)
+        next(err)
 
       // console.log('Insert a new user with id: ', result.insertedId);
       console.log("result", result);
@@ -85,8 +88,10 @@ app.post("/", (req, res) => {
   );
 });
 
-app.get("/", (req, res) => {
+app.get("/", (req, res, next) => {
   connection.query("SELECT * FROM patient", (err, rows, fields) => {
+    if (err)
+      next(err)
     console.log("Thanh cong");
     console.log("rows", rows);
     const result = rows.map((row) => ({
@@ -102,7 +107,7 @@ app.get("/", (req, res) => {
   });
 });
 
-app.delete("/:delete_id", (req, res) => {
+app.delete("/:delete_id", (req, res, next) => {
   const id = "iid" + req.params["delete_id"];
   console.log("id", id);
   connection.query(
@@ -113,16 +118,23 @@ app.delete("/:delete_id", (req, res) => {
     WHERE clinical_trial.insurance_id = ?`,
     [id],
     (err, rows, fields) => {
+      if (err)
+        next(err)
+
       connection.query(
         "DELETE FROM clinical_trial WHERE insurance_id =  ?",
         [id],
         (err, rows, fields) => {
+          if (err)
+            next(err)
           console.log("rows", rows);
           if (!err) {
             connection.query(
               "DELETE FROM patient WHERE insurance_id =  ?",
               [id],
               (err, rows, fields) => {
+                if (err)
+                  next(err)
                 console.log("Success");
 
                 res.header("Access-Control-Expose-Headers", "Content-Range");

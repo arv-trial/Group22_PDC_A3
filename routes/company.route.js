@@ -4,8 +4,9 @@ const app = express.Router()
 const connection = getConnection()
 
 
-app.get('/', (req, res) => {
+app.get('/', (req, res, next) => {
     connection.query('SELECT *, company.company_name as id FROM company', (err, rows, fields) => {
+      if(err) next(err)
         console.log('Thanh cong')
         res.header("Access-Control-Expose-Headers", "Content-Range");
         res.header("Content-Range", "bytes : 0-9/*");
@@ -13,7 +14,7 @@ app.get('/', (req, res) => {
     })
 })
 
-app.put("/:company", function (req, res) {
+app.put("/:company", function (req, res, next) {
     let id = req.params["company"];
     let body = req.body
     let description = req.params.description;
@@ -22,7 +23,7 @@ app.put("/:company", function (req, res) {
       "UPDATE `company` SET ? WHERE `company_name` = ?",
       [body,id],
       function (error, results, fields) {
-        if (error) throw error;
+        if(error) next(error)
         console.log(results);
         
         res.header("Access-Control-Expose-Headers", "Content-Range");
@@ -34,7 +35,7 @@ app.put("/:company", function (req, res) {
   });
   
   // FIXME: 
-  app.post("/", (req, res) => {
+  app.post("/", (req, res, next) => {
     console.log("Trying to create a new user...");
     console.log("How do we get the data?");
   
@@ -47,12 +48,7 @@ app.put("/:company", function (req, res) {
       queryString,
       [body],
       (err, result, fields) => {
-        if (err) {
-          console.log("Failed to insert new user:" + err);
-          res.sendStatus(500);
-          return;
-        }
-  
+        if(err) next(err)
         // console.log('Insert a new user with id: ', result.insertedId);
         console.log("result", result);
 

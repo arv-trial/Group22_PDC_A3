@@ -21,14 +21,6 @@ app.use(cors({
     origin: '*'
 }))
 
-app.get("/", (req, res) => {
-    res.send("Hello from Rooot")
-
-    res.header("Access-Control-Expose-Headers", "Content-Range");
-    res.header("Content-Range", "bytes : 0-9/*");
-})
-
-
 app.use('/patient', require('./routes/patient.route'))
 app.use('/drug', require('./routes/drug.route'))
 app.use('/company', require('./routes/company.route'))
@@ -36,9 +28,17 @@ app.use('/side_effect', require('./routes/side_effect.route'))
 app.use('/clinical_trial', require('./routes/clinical_trial.route'))
 app.use('/result', require('./routes/result.route'))
 
-app.get('/nonsense', (req, res) => res.status(200).json({
-    data: [1, 2, 3, 4, 5]
-}))
+
+
+app.use((req, res, next) => {
+    res.status(404).send("NOT FOUND");
+  });
+  
+  app.use(function (err, req, res, next) {
+    const code = err.code || 500;
+    console.log(code, err.message);
+    res.status(code).send(err.message);
+  });
 
 app.use(logger('combined'))
 
