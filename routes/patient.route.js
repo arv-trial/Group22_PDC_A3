@@ -10,39 +10,42 @@ app.get("/:id", (req, res) => {
     "SELECT * FROM patient WHERE insurance_id = ? ",
     [id],
     (err, rows, fields) => {
-      console.log("Sucess");
+      if (rows.length) {
 
-      const result = {
-        ...rows[0],
-        id: parseInt(rows[0].insurance_id.slice(3)),
-      };
-      res.header("Access-Control-Expose-Headers", "Content-Range");
-      res.header("Content-Range", "bytes : 0-9/*");
-      res.json(result);
+        const result = {
+          ...rows[0],
+          id: parseInt(rows[0].insurance_id.slice(3)),
+        };
+        res.header("Access-Control-Expose-Headers", "Content-Range");
+        res.header("Content-Range", "bytes : 0-9/*");
+        res.json(result);
+      }
+      res.status(404).json('Item not found')
     }
   );
 });
 
 app.put("/:edit_id", function (req, res) {
-  let id = "iid" + req.params["edit_id"];
-  let name = req.params.patient_name;
-  let birthday = req.params.dateofbirth;
-  let gender = req.params.gender;
+  let insurance_id = "iid" + req.params["edit_id"];
+  const { id, ...rest } = req.body
+
   connection.query(
-    "UPDATE `patient` SET `patient_name`=?,`dateofbirth`=?,`gender`=? WHERE `insurance_id` =?",
-    [name, birthday, gender, [id]],
+    "UPDATE `patient` SET ? WHERE insurance_id = ?", [rest, insurance_id],
     function (error, results, fields) {
-      if (error)
-       {throw error}
-      else{
-        let total = results.length
-        console.log(total)
-        console.log(results);
-      res.header("Access-Control-Expose-Headers", "Content-Range");
-      res.header("Content-Range", "bytes : 0-9/*");
-      res.header('Access-Control-Expose-Headers', 'X-Total-Count')
-      res.set("X-total-count",total)
-      res.end(JSON.stringify(results))};
+      if (error) { throw error }
+      else {
+        // let total = results.length
+        // console.log(total)
+        // console.log(results);
+        res.header("Access-Control-Expose-Headers", "Content-Range");
+        res.header("Content-Range", "bytes : 0-9/*");
+        res.header('Access-Control-Expose-Headers', 'X-Total-Count')
+        // res.set("X-total-count", total)
+        // res.end(JSON.stringify(results))
+
+        res.status(200).json({ data: req.body })
+
+      };
     }
   );
 });
