@@ -57,6 +57,7 @@ app.put("/:company", function (req, res) {
         console.log("result", result);
 
         res.header("Access-Control-Expose-Headers", "Content-Range");
+        res.header('Access-Control-Expose-Headers', 'X-Total-Count')
         res.header("Content-Range", "bytes : 0-9/*");
         
         res.status(200).json(result);

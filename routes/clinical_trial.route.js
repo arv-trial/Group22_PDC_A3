@@ -20,7 +20,7 @@ app.get("/", (req, res) => {
 app.get("/:id/clinical-trial", (req, res) => {
   const id = req.params["id"];
   connection.query(
-    "SELECT *, patient.insurance_id as id FROM patient, clinical_trial WHERE patient.insurance_id =  AND patient.insurance_id = clinical_trial.insurance_id",
+    `SELECT *, patient.insurance_id as id FROM patient, clinical_trial WHERE patient.insurance_id =  AND patient.insurance_id = clinical_trial.insurance_id`,
     [id],
     (err, rows, fields) => {
       console.log("Thanh cong");
@@ -63,26 +63,13 @@ app.delete("/:id/clinical_trial", (req, res) => {
 
 app.get("/resistant", (req, res) => {
   connection.query(
-    // `SELECT id_clinical_trial, after_6_month, cd4_init_record, (after_6_month-cd4_init_record) as subtract FROM clinical_trial`,
-    `SELECT COUNT(*) as value, CASE WHEN (after_6_month-cd4_init_record) < 50 THEN "resistantPatient" ELSE "nonResistantPatient" END AS result
+    `SELECT COUNT(*) as value, 
+    CASE WHEN (after_6_month-cd4_init_record) < 50 
+    THEN "resistantPatient" ELSE "nonResistantPatient" END AS result
     FROM clinical_trial
     GROUP BY result`,
     (err, rows, fields) => {
       if (!err) {
-        // console.log("rows", rows);
-        // let result = rows.reduce(
-        //   (accumulator, currentValue) => {
-        //     currentValue.subtract < 50
-        //       ? (accumulator["resistantPatient"] += 1)
-        //       : (accumulator["nonResistantPatient"] += 1);
-        //     return accumulator;
-        //   },
-        //   {
-        //     resistantPatient: 0,
-        //     nonResistantPatient: 0,
-        //   }
-        // );
-        // const result = {}
         const result = rows.reduce((accumulator, currentValue) => {
           accumulator[currentValue.result] = currentValue.value;
           return { ...accumulator };

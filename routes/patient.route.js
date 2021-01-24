@@ -32,11 +32,17 @@ app.put("/:edit_id", function (req, res) {
     "UPDATE `patient` SET `patient_name`=?,`dateofbirth`=?,`gender`=? WHERE `insurance_id` =?",
     [name, birthday, gender, [id]],
     function (error, results, fields) {
-      if (error) throw error;
-      console.log(results);
+      if (error)
+       {throw error}
+      else{
+        let total = results.length
+        console.log(total)
+        console.log(results);
       res.header("Access-Control-Expose-Headers", "Content-Range");
       res.header("Content-Range", "bytes : 0-9/*");
-      res.end(JSON.stringify(results));
+      res.header('Access-Control-Expose-Headers', 'X-Total-Count')
+      res.set("X-total-count",total)
+      res.end(JSON.stringify(results))};
     }
   );
 });
